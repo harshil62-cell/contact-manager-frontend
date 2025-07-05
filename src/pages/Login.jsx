@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AppName from '../components/Appname';
 
 const Login = () => {
 
     const[email,setEmail]=useState('');
     const[password,setPassword]=useState('');
     const[error,setError]=useState('');
+    const navigate=useNavigate();
 
     const validateEmail=(email)=>{
         const regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -31,7 +34,8 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login to Contactify</h2>
+        <AppName/>
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
         {error && <p className="mb-4 text-red-500 text-sm text-center">{error}</p>}
         <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
@@ -60,7 +64,7 @@ const Login = () => {
           </button>
         </form>
         <p className="mt-4 text-sm text-center text-gray-500">
-          Don't have an account? <span className="text-indigo-500 cursor-pointer hover:underline">Sign up</span>
+          Don't have an account? <span className="text-indigo-500 cursor-pointer hover:underline" onClick={()=>{navigate('/signup')}}>Sign up</span>
         </p>
       </div>
     </div>

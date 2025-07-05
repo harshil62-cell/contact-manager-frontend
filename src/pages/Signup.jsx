@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AppName from '../components/Appname';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +10,7 @@ const Signup = () => {
     confirmPassword: '',
   });
   const [error, setError] = useState('');
+  const navigate=useNavigate();
 
   const validateEmail = (email) => {
     const regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -43,6 +46,7 @@ const Signup = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
+        <AppName/>
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Create an Account</h2>
         {error && <p className="mb-4 text-red-500 text-sm text-center">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -98,7 +102,7 @@ const Signup = () => {
           </button>
         </form>
         <p className="mt-4 text-sm text-center text-gray-500">
-          Already have an account? <span className="text-indigo-500 cursor-pointer hover:underline">Login</span>
+          Already have an account? <span className="text-indigo-500 cursor-pointer hover:underline" onClick={()=>navigate('/')}>Login</span>
         </p>
       </div>
     </div>
