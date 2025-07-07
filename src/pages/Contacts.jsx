@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppName from '../components/AppName';
+import { getAllContacts } from '../api/contactApi';
 
 const initialContacts = [
   {
@@ -28,12 +29,28 @@ const initialContacts = [
   },
 ];
 
+
+
 const Contacts = () => {
-  const [contacts, setContacts] = useState(initialContacts);
+  const [contacts, setContacts] = useState([]);
   const [search, setSearch] = useState('');
 
+  useEffect(()=>{
+    const fetchData=async()=>{
+      try {
+        const data=await getAllContacts();
+        setContacts(data);
+        console.log(data);
+      } catch (error) {
+        console.error('Failed to fetch contacts',error);
+      }
+    }
+
+    fetchData();
+  },[]);
+
   const handleDelete = (id) => {
-    const filtered = contacts.filter((contact) => contact.id !== id);
+    const filtered = contacts.filter((contact) => contact._id !== id);
     setContacts(filtered);
   };
 
@@ -69,7 +86,7 @@ const Contacts = () => {
           <div className="grid gap-4 md:grid-cols-2">
             {filteredContacts.map((contact) => (
               <div
-                key={contact.id}
+                key={contact._id}
                 className="border rounded-2xl p-4 bg-gray-50 shadow-sm hover:shadow-md transition duration-200 flex flex-col justify-between"
               >
                 <div>
@@ -81,7 +98,7 @@ const Contacts = () => {
                   <button className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-xl">View</button>
                   <button className="text-sm bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-1 rounded-xl">Edit</button>
                   <button
-                    onClick={() => handleDelete(contact.id)}
+                    onClick={() => handleDelete(contact._id)}
                     className="text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-xl"
                   >
                     Delete

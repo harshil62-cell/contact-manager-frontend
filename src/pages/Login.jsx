@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AppName from '../components/Appname';
+import AppName from '../components/AppName';
+import { loginUser,signupUser } from '../api/authApi';
 
 const Login = () => {
 
@@ -14,7 +15,7 @@ const Login = () => {
         return regex.test(email);
     }
 
-    const handleSubmit=(e)=>{
+    const handleSubmit=async(e)=>{
         e.preventDefault();
 
         if(!email || !password){
@@ -27,6 +28,13 @@ const Login = () => {
             setError('');
             console.log('form submitted');
             //login API call
+            try{
+              const res=await loginUser({email,password});
+              localStorage.setItem('token',res.accessToken);
+              navigate('/contacts');
+            }catch(e){
+              console.error("error",res.message);
+            }
 
         }
     }
@@ -58,7 +66,7 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-2 rounded-xl font-semibold transition duration-200"
+            className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-2 rounded-xl font-semibold transition duration-200 cursor-pointer"
           >
             Login
           </button>
