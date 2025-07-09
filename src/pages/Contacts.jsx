@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AppName from '../components/AppName';
 import { getAllContacts } from '../api/contactApi';
+import AddContactForm from '../components/AddContactForm';
 
 const initialContacts = [
   {
@@ -34,6 +35,7 @@ const initialContacts = [
 const Contacts = () => {
   const [contacts, setContacts] = useState([]);
   const [search, setSearch] = useState('');
+  const [addNewContact,setAddNewContact]=useState(false);
 
   useEffect(()=>{
     const fetchData=async()=>{
@@ -61,6 +63,14 @@ const Contacts = () => {
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-6 flex flex-col items-center">
       <AppName />
+      {addNewContact && (
+  <AddContactForm
+    onClose={() => setAddNewContact(false)}
+    onSave={(newContact) => {
+      setContacts((prev) => [...prev, newContact]);
+    }}
+  />
+)}
       <div className="w-full max-w-5xl bg-white p-6 rounded-2xl shadow-md">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
           <h2 className="text-2xl font-bold text-gray-800 text-center sm:text-left">Your Contacts</h2>
@@ -73,8 +83,8 @@ const Contacts = () => {
               className="w-full sm:w-64 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <button
-              className="bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded-xl font-medium transition duration-200"
-            >
+              className="bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded-xl font-medium transition duration-200 cursor-pointer"
+              onClick={()=>setAddNewContact(true)}>
               + Add New Contact
             </button>
           </div>
